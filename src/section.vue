@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-horizontal-cards" :style="customStyle">
+    <div class="blog-cards" :style="customStyle">
         <!-- wwManager:start -->
         <wwSectionEditMenu :sectionCtrl="sectionCtrl" :options="openOptions"></wwSectionEditMenu>
         <!-- wwManager:end -->
@@ -22,14 +22,16 @@
                     </wwContextMenu>
                     <!-- wwManager:end -->
 
-                    <div class="content-container" :style="{'order': isMobileOrPair(index)}">
-                        <wwObject class="background" :ww-object="thumbnail.background" ww-category="background" ww-default-object-type="ww-color"></wwObject>
-                        <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="thumbnail.contents" class="content" @ww-add="add(thumbnail.contents, $event)" @ww-remove="remove(thumbnail.contents, $event)">
-                            <wwObject v-for="content in thumbnail.contents" :key="content.uniqueId" :ww-object="content"></wwObject>
-                        </wwLayoutColumn>
-                    </div>
-                    <div class="image-container">
-                        <wwObject class="background" :ww-object="thumbnail.image" ww-category="background" ww-default-object-type="ww-image"></wwObject>
+                    <div class="content-container">
+                        <div class="image-container">
+                            <wwObject class="background" :ww-object="thumbnail.image" ww-category="background" ww-default-object-type="ww-image"></wwObject>
+                        </div>
+                        <div class="content-container">
+                            <wwObject class="background" :ww-object="thumbnail.background" ww-category="background" ww-default-object-type="ww-color"></wwObject>
+                            <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="thumbnail.contents" class="content" @ww-add="add(thumbnail.contents, $event)" @ww-remove="remove(thumbnail.contents, $event)">
+                                <wwObject v-for="content in thumbnail.contents" :key="content.uniqueId" :ww-object="content"></wwObject>
+                            </wwLayoutColumn>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -278,7 +280,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.blog-horizontal-cards {
+.blog-cards {
     position: relative;
 
     .background {
@@ -303,9 +305,15 @@ export default {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
+        width: 90%;
+        margin-left: 5%;
+        @media (min-width: 768px) {
+            width: 80%;
+            margin-left: 10%;
+        }
 
         .thumbnail {
-            width: 90%;
+            width: 100%;
             margin-right: 15px;
             position: relative;
             margin: 30px 15px;
@@ -314,20 +322,16 @@ export default {
             box-shadow: var(--shadowColor);
             transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
             @media (min-width: 768px) {
-                width: 90%;
-            }
-            @media (min-width: 992px) {
-                width: 75%;
-            }
-            @media (min-width: 1200px) {
-                width: 70%;
+                width: 30%;
             }
             .thumbnail-border {
                 display: flex;
+                flex-direction: column;
                 flex-wrap: wrap;
                 overflow: hidden;
                 border-radius: var(--cardBorderRadius);
                 width: 100%;
+                height: 100%;
             }
             &:hover {
                 box-shadow: var(--shadowColorAfter);
@@ -341,9 +345,7 @@ export default {
             .content-container {
                 position: relative;
                 width: 100%;
-                @media (min-width: 768px) {
-                    width: 50%;
-                }
+                height: 100%;
             }
 
             .image-container {
@@ -352,9 +354,6 @@ export default {
                 min-height: 200px;
                 .background {
                     overflow: hidden;
-                }
-                @media (min-width: 768px) {
-                    width: 50%;
                 }
             }
 

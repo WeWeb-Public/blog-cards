@@ -1,10 +1,10 @@
 {
-    "name": "blog-horizontal-cards",
+    "name": "blog-cards",
     "type": "section",
     "wewebPublic": true,
     "repository": {
         "type": "git",
-        "url": "https://github.com/WeWeb-Public/feature_C"
+        "url": "https://github.com/WeWeb-Public/blog-cards"
     },
     "version": "0.0.1",
     "private": true,
