@@ -13,24 +13,27 @@
         </div>
 
         <!--THUMBNAILS-->
-        <div class="thumbnail-container">
-            <div class="thumbnail" v-for="(thumbnail, index) in section.data.thumbnails" :key="thumbnail.uniqueId">
-                <div class="thumbnail-border">
-                    <!-- wwManager:start -->
-                    <wwContextMenu tag="div" class="contextmenu" v-if="sectionCtrl.getEditMode() == 'CONTENT'" @ww-add-before="addCardBefore(index)" @ww-add-after="addCardAfter(index)" @ww-remove="removeCard(index)">
-                        <div class="wwi wwi-config"></div>
-                    </wwContextMenu>
-                    <!-- wwManager:end -->
 
-                    <div class="content-container">
-                        <div class="image-container">
-                            <wwObject class="background" :ww-object="thumbnail.image" ww-category="background" ww-default-object-type="ww-image"></wwObject>
-                        </div>
+        <div class="thumbnail-container">
+            <div class="thumbnail" :class="[section.data.numberOfCards]" v-for="(thumbnail, index) in section.data.thumbnails" :key="thumbnail.uniqueId">
+                <div class="shadow">
+                    <div class="thumbnail-border">
+                        <!-- wwManager:start -->
+                        <wwContextMenu tag="div" class="contextmenu" v-if="sectionCtrl.getEditMode() == 'CONTENT'" @ww-add-before="addCardBefore(index)" @ww-add-after="addCardAfter(index)" @ww-remove="removeCard(index)">
+                            <div class="wwi wwi-config"></div>
+                        </wwContextMenu>
+                        <!-- wwManager:end -->
+
                         <div class="content-container">
-                            <wwObject class="background" :ww-object="thumbnail.background" ww-category="background" ww-default-object-type="ww-color"></wwObject>
-                            <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="thumbnail.contents" class="content" @ww-add="add(thumbnail.contents, $event)" @ww-remove="remove(thumbnail.contents, $event)">
-                                <wwObject v-for="content in thumbnail.contents" :key="content.uniqueId" :ww-object="content"></wwObject>
-                            </wwLayoutColumn>
+                            <div class="image-container">
+                                <wwObject class="background" :ww-object="thumbnail.image" ww-category="background" ww-default-object-type="ww-image"></wwObject>
+                            </div>
+                            <div class="content-container">
+                                <wwObject class="background" :ww-object="thumbnail.background" ww-category="background" ww-default-object-type="ww-color"></wwObject>
+                                <wwLayoutColumn tag="div" ww-default="ww-image" :ww-list="thumbnail.contents" class="content" @ww-add="add(thumbnail.contents, $event)" @ww-remove="remove(thumbnail.contents, $event)">
+                                    <wwObject v-for="content in thumbnail.contents" :key="content.uniqueId" :ww-object="content"></wwObject>
+                                </wwLayoutColumn>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -59,6 +62,56 @@ wwLib.wwPopups.addStory('BLOG_CARD_CONFIG', {
         fields: [
             {
                 label: {
+                    en: 'Number of cards per line:',
+                    fr: 'Nombre de carte par ligne :'
+                },
+                type: 'select',
+                key: 'numberOfCards',
+                valueData: 'numberOfCards',
+                options: {
+                    type: 'text',
+                    values: [
+                        {
+                            value: 'one',
+                            text: {
+                                en: 'one',
+                                fr: 'une'
+                            }
+                        },
+                        {
+                            value: 'two',
+                            text: {
+                                en: 'two',
+                                fr: 'deux'
+                            }
+                        },
+                        {
+                            value: 'three',
+                            default: true,
+                            text: {
+                                en: 'three',
+                                fr: 'trois'
+                            }
+                        },
+                        {
+                            value: 'four',
+                            text: {
+                                en: 'four',
+                                fr: 'quatre'
+                            }
+                        },
+                        {
+                            value: 'five',
+                            text: {
+                                en: 'five',
+                                fr: 'cinq'
+                            }
+                        },
+                    ]
+                }
+            },
+            {
+                label: {
                     en: 'Shadow Color:',
                     fr: 'Couleur de l\'ombre :'
                 },
@@ -69,6 +122,28 @@ wwLib.wwPopups.addStory('BLOG_CARD_CONFIG', {
                     en: 'Example: 0 10px 40px 0 rgba(113, 124, 137, 0.2)',
                     fr: 'Exemple : 0 10px 40px 0 rgba(113, 124, 137, 0.2)'
                 }
+            },
+            {
+                label: {
+                    en: 'Border radius in px:',
+                    fr: 'Arrondis des coins en px :'
+                },
+                type: 'text',
+                key: 'cardBorderRadius',
+                valueData: 'cardBorderRadius',
+                desc: {
+                    en: 'Edit card border radius',
+                    fr: 'Changer la bordure des coins des cartes'
+                }
+            },
+            {
+                label: {
+                    en: 'Animation at hover:',
+                    fr: 'Animer au passage de la souris :'
+                },
+                type: 'radio',
+                key: 'animAtHover',
+                valueData: 'animAtHover'
             },
             {
                 label: {
@@ -85,17 +160,17 @@ wwLib.wwPopups.addStory('BLOG_CARD_CONFIG', {
             },
             {
                 label: {
-                    en: 'Border radius in px:',
-                    fr: 'Arrondis des coins en px :'
+                    en: 'Number of pixels the card will scroll top:',
+                    fr: 'Nombre de pixels dont la carte va se soulever:'
                 },
                 type: 'text',
-                key: 'cardBorderRadius',
-                valueData: 'cardBorderRadius',
+                key: 'pixelsToScrollTop',
+                valueData: 'pixelsToScrollTop',
                 desc: {
-                    en: 'Edit card border radius',
-                    fr: 'Changer la bordure des coins des cartes'
+                    en: 'Example: 10',
+                    fr: 'Exemple : 10'
                 }
-            },
+            }
         ]
     },
     buttons: {
@@ -127,9 +202,10 @@ export default {
         },
         customStyle() {
             return {
-                '--cardBorderRadius': this.section.data.cardBorderRadius + 'px',
+                '--cardBorderRadius': `${this.section.data.cardBorderRadius}px`,
                 '--shadowColor': this.section.data.shadowColor,
-                '--shadowColorAfter': this.section.data.shadowColorAfter
+                '--shadowColorAfter': this.section.data.shadowColorAfter,
+                '--pixelsToScrollTop': `-${this.section.data.pixelsToScrollTop}px`
             }
         }
     },
@@ -174,6 +250,10 @@ export default {
                 this.section.data.cardBorderRadius = '0';
                 needUpdate = true;
             }
+            if (!this.section.data.numberOfCards) {
+                this.section.data.numberOfCards = 'three';
+                needUpdate = true;
+            }
             if (needUpdate) {
                 this.sectionCtrl.update(this.section);
             }
@@ -197,6 +277,29 @@ export default {
                 return 0
             }
         },
+
+        // getNumberOfCardClass() {
+        //     switch (this.section.numberOfCards) {
+        //         case 'one':
+        //             return 'one'
+        //             break;
+        //         case 'two':
+
+        //             break;
+        //         case 'three':
+
+        //             break;
+        //         case 'four':
+
+        //             break;
+        //         case 'five':
+
+        //             break;
+
+        //         default:
+        //             break;
+        //     }
+        // },
 
         /* wwManager:start */
         add(list, options) {
@@ -237,26 +340,47 @@ export default {
             let options = {
                 firstPage: 'BLOG_CARD_CONFIG',
                 data: {
+                    numberOfCards: this.section.data.numberOfCards,
                     shadowColor: this.section.data.shadowColor,
+                    cardBorderRadius: this.section.data.cardBorderRadius,
+                    animAtHover: this.section.data.animAtHover,
                     shadowColorAfter: this.section.data.shadowColorAfter,
-                    cardBorderRadius: this.section.data.cardBorderRadius
+                    pixelsToScrollTop: this.section.data.pixelsToScrollTop
                 },
             }
 
             const result = await wwLib.wwPopups.open(options)
             let updateSection = false;
+            if (result.numberOfCards) {
+                this.section.data.numberOfCards = result.numberOfCards;
+                updateSection = true;
+            }
+
             if (result.shadowColor) {
                 this.section.data.shadowColor = result.shadowColor;
                 updateSection = true;
             }
-            if (result.shadowColorAfter) {
-                this.section.data.shadowColorAfter = result.shadowColorAfter;
-                updateSection = true;
-            }
+
             if (result.cardBorderRadius) {
                 this.section.data.cardBorderRadius = result.cardBorderRadius;
                 updateSection = true;
             }
+
+            if (result.animAtHover) {
+                this.section.data.animAtHover = result.animAtHover;
+                updateSection = true;
+            }
+
+            if (result.shadowColorAfter) {
+                this.section.data.shadowColorAfter = result.shadowColorAfter;
+                updateSection = true;
+            }
+
+            if (result.pixelsToScrollTop) {
+                this.section.data.pixelsToScrollTop = result.pixelsToScrollTop;
+                updateSection = true;
+            }
+
             if (updateSection) {
                 this.sectionCtrl.update(this.section);
             }
@@ -302,6 +426,7 @@ export default {
     }
 
     .thumbnail-container {
+        position: relative;
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
@@ -313,29 +438,45 @@ export default {
         }
 
         .thumbnail {
-            width: 100%;
-            margin-right: 15px;
+            flex-basis: 100%;
             position: relative;
-            margin: 30px 15px;
-            border-radius: var(--cardBorderRadius);
+            margin: 30px 0;
             min-height: 50px;
-            box-shadow: var(--shadowColor);
             transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+            padding: 0 15px;
             @media (min-width: 768px) {
-                width: 30%;
+                &.one {
+                    flex-basis: 100%;
+                }
+                &.two {
+                    flex-basis: 50%;
+                }
+                &.three {
+                    flex-basis: 33.3333%;
+                }
+                &.four {
+                    flex-basis: 25%;
+                }
+                &.five {
+                    flex-basis: 20%;
+                }
             }
-            .thumbnail-border {
-                display: flex;
-                flex-direction: column;
-                flex-wrap: wrap;
-                overflow: hidden;
+            .shadow {
                 border-radius: var(--cardBorderRadius);
-                width: 100%;
-                height: 100%;
-            }
-            &:hover {
-                box-shadow: var(--shadowColorAfter);
-                transform: translateY(-10px);
+                box-shadow: var(--shadowColor);
+                .thumbnail-border {
+                    display: flex;
+                    flex-direction: column;
+                    flex-wrap: wrap;
+                    overflow: hidden;
+                    border-radius: var(--cardBorderRadius);
+                    width: 100%;
+                    height: 100%;
+                }
+                &:hover {
+                    box-shadow: var(--shadowColorAfter);
+                    transform: translateY(var(--pixelsToScrollTop));
+                }
             }
 
             .content {
