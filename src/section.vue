@@ -201,11 +201,14 @@ export default {
             return this.sectionCtrl.get();
         },
         customStyle() {
+            const shadowColorAfter = this.section.data.animAtHover ? this.section.data.shadowColorAfter : this.section.data.shadowColor;
+            const pixelsToScrollTop = `-${this.section.data.animAtHover ? this.section.data.pixelsToScrollTop : '0'}px`;
+            console.log(this.section.data.animAtHover, shadowColorAfter, pixelsToScrollTop)
             return {
                 '--cardBorderRadius': `${this.section.data.cardBorderRadius}px`,
                 '--shadowColor': this.section.data.shadowColor,
-                '--shadowColorAfter': this.section.data.shadowColorAfter,
-                '--pixelsToScrollTop': `-${this.section.data.pixelsToScrollTop}px`
+                '--shadowColorAfter': shadowColorAfter,
+                '--pixelsToScrollTop': pixelsToScrollTop
             }
         }
     },
@@ -366,7 +369,7 @@ export default {
                 updateSection = true;
             }
 
-            if (result.animAtHover) {
+            if (typeof (result.animAtHover) != 'undefined') {
                 this.section.data.animAtHover = result.animAtHover;
                 updateSection = true;
             }
@@ -442,7 +445,7 @@ export default {
             position: relative;
             margin: 30px 0;
             min-height: 50px;
-            transition: transform 0.4s ease-out, box-shadow 0.4s ease-out;
+            transition: transform 0.4s ease-out;
             padding: 0 15px;
             @media (min-width: 768px) {
                 &.one {
@@ -462,6 +465,7 @@ export default {
                 }
             }
             .shadow {
+                transition: box-shadow 0.4s ease-out;
                 border-radius: var(--cardBorderRadius);
                 box-shadow: var(--shadowColor);
                 .thumbnail-border {
@@ -475,8 +479,10 @@ export default {
                 }
                 &:hover {
                     box-shadow: var(--shadowColorAfter);
-                    transform: translateY(var(--pixelsToScrollTop));
                 }
+            }
+            &:hover {
+                transform: translateY(var(--pixelsToScrollTop));
             }
 
             .content {
