@@ -9541,10 +9541,10 @@ websocket-extensions@>=0.1.1:
   resolved "https://registry.yarnpkg.com/websocket-extensions/-/websocket-extensions-0.1.3.tgz#5d2ff22977003ec687a4b87073dfbbac146ccf29"
   integrity sha512-nqHUnMXmBzT0w570r2JpJxfiSD1IzoI+HGVdd3aZ0yNi3ngvQ4jv1dtHt5VGxfI2yj5yqImPhOK4vmIh2xMbGg==
 
-weweb-client@^1.1.3:
-  version "1.1.3"
-  resolved "https://registry.yarnpkg.com/weweb-client/-/weweb-client-1.1.3.tgz#4269f28e3d53a456f42cf0cffb5e6afb7e1ed000"
-  integrity sha512-ltuiWKWTxAsdJ/gN52FpnrtQNJ0KWJgt7R5G1Jn+QkNLZbLLUxyhMNphm/9Xt3s38dvbZx3MQ2URLm2QYdMRQA==
+weweb-client@latest:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/weweb-client/-/weweb-client-1.1.4.tgz#1d9d73f8ce47d1c92289d0e3c029370b1f7ddf6f"
+  integrity sha512-GtX5AbzxLe4zGEvxVtR8I2KvSsWQjbfnlBHfMiR/BbdT2VF9jpFDaf3HrnbK1f28D8pVxGU9oldy5RQX3rZ4Zg==
   dependencies:
     "@babel/core" "^7.9.0"
     "@babel/preset-env" "7.6.2"
