@@ -473,9 +473,7 @@ export default {
   mounted: function() {
     this.init();
   },
-  beforeDestroy() {
-    window.removeEventListener("resize", this.setThumbnailsPerLine);
-  },
+  beforeDestroy() {},
 };
 </script>
 
